@@ -7,6 +7,8 @@ class CreateOrders < ActiveRecord::Migration[6.1]
       t.boolean :active
 
       t.timestamps
+
+      t.belongs_to :user, foreign_key: true
     end
   end
 end

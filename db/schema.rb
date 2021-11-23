@@ -15,8 +15,12 @@ ActiveRecord::Schema.define(version: 2021_11_18_174151) do
   create_table "order_items", charset: "utf8mb4", force: :cascade do |t|
     t.decimal "total", precision: 10, scale: 2
     t.integer "quantity"
+    t.bigint "order_id"
+    t.bigint "product_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["order_id"], name: "index_order_items_on_order_id"
+    t.index ["product_id"], name: "index_order_items_on_product_id"
   end
 
   create_table "orders", charset: "utf8mb4", force: :cascade do |t|
@@ -26,6 +30,8 @@ ActiveRecord::Schema.define(version: 2021_11_18_174151) do
     t.boolean "active"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
   create_table "products", charset: "utf8mb4", force: :cascade do |t|
@@ -49,4 +55,7 @@ ActiveRecord::Schema.define(version: 2021_11_18_174151) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "order_items", "orders"
+  add_foreign_key "order_items", "products"
+  add_foreign_key "orders", "users"
 end
