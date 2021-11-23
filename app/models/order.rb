@@ -9,4 +9,13 @@ class Order < ApplicationRecord
     has_many :order_items
     has_many :products, through: :order_items
 
+    before_validation :verify_user_active_order
+
+    private
+    def verify_user_active_order
+        if self.user.has_active_order
+            throw :abort
+        end
+    end
+
 end
