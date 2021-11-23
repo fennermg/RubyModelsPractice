@@ -24,10 +24,10 @@ ActiveRecord::Schema.define(version: 2021_11_18_174151) do
   end
 
   create_table "orders", charset: "utf8mb4", force: :cascade do |t|
-    t.integer "orderNumber"
-    t.date "date"
-    t.decimal "total", precision: 10, scale: 2
-    t.boolean "active"
+    t.integer "orderNumber", null: false
+    t.date "date", null: false
+    t.decimal "total", precision: 10, scale: 2, default: "0.0", null: false
+    t.boolean "active", default: true, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id"

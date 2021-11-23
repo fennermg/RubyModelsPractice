@@ -21,6 +21,12 @@ class User < ApplicationRecord
         now.year - born.year - ((now.month>born.month||(now.month==born.month && now.day >=born.day))? 0 : 1)
     end
 
+    def has_active_order
+        orders = self.orders
+        active = orders.select{|element| element.active == true}
+        active.length > 0
+    end
+
     def self.get_active_users
         self.where("active = true")
     end
