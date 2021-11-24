@@ -1,5 +1,8 @@
 class Order < ApplicationRecord
 
+    before_validation  :generate_ordernumber
+    before_save :verify_user_active_order
+
     validates :orderNumber, :date, :total, presence: true
 
     validates :active, inclusion: [true, false]
@@ -9,13 +12,20 @@ class Order < ApplicationRecord
     has_many :order_items
     has_many :products, through: :order_items
 
-    before_validation :verify_user_active_order
+    
+    def deactivate
+        self.update(active: false)
+    end
 
     private
     def verify_user_active_order
         if self.user.has_active_order
             throw :abort
         end
+    end
+
+    def generate_ordernumber
+        self.orderNumber= SecureRandom.random_number(100000000);
     end
 
 end

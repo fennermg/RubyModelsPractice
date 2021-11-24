@@ -24,7 +24,7 @@ class User < ApplicationRecord
     def has_active_order
         orders = self.orders
         active = orders.select{|element| element.active == true}
-        active.length > 0
+        active.length > 1
     end
 
     def self.get_active_users
