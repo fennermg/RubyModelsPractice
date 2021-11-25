@@ -9,7 +9,7 @@ class Order < ApplicationRecord
     validates :active, exclusion: [nil]
 
     belongs_to :user
-    has_many :order_items
+    has_many :order_items, autosave: true
     has_many :products, through: :order_items
 
     
