@@ -48,7 +48,7 @@ ActiveRecord::Schema.define(version: 2021_11_18_174151) do
     t.string "name", null: false
     t.string "lastName", null: false
     t.date "birthDate", null: false
-    t.string "password", null: false
+    t.string "password_digest", null: false
     t.boolean "active", default: true, null: false
     t.string "email", null: false
     t.datetime "created_at", precision: 6, null: false

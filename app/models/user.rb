@@ -1,7 +1,13 @@
+require 'bcrypt'
+
 class User < ApplicationRecord
-    validates :name, :lastName, :birthDate, :password, :email, presence: true
+
+    include ActiveModel::SecurePassword
+
+
+    validates :name, :lastName, :birthDate, :password_digest, :email, presence: true
     
-    validates :password , length: { minimum: 3 }
+    validates :password_digest , length: { minimum: 3 }
 
     validates :active, inclusion: [true, false]
     validates :active, exclusion: [nil]
@@ -9,6 +15,7 @@ class User < ApplicationRecord
     validates :email,   format: { with: URI::MailTo::EMAIL_REGEXP, message: "Email invalid"  },
                         uniqueness: { case_sensitive: false },
                         length: { minimum: 4, maximum: 254 }
+
 
 
     def deactivate
@@ -34,4 +41,5 @@ class User < ApplicationRecord
     has_many :orders
     has_many :order_items, through: :orders
 
+    has_secure_password
 end
