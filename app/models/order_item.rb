@@ -2,8 +2,13 @@ class OrderItem < ApplicationRecord
     belongs_to :order
     belongs_to :product
 
-    before_save :increment_first_item
+    before_save :increment_first_item, :set_total
     after_commit :destroy_duplicates
+
+
+    def set_total
+        self.total = self.product.price * self.quantity
+    end
 
     private
     def increment_first_item
@@ -33,6 +38,5 @@ class OrderItem < ApplicationRecord
         end
 
     end
-
 
 end

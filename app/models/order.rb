@@ -1,7 +1,7 @@
 class Order < ApplicationRecord
 
     before_validation  :generate_ordernumber
-    before_save :verify_user_active_order
+    before_save :verify_user_active_order, :set_total
 
     validates :orderNumber, :date, :total, presence: true
 
@@ -26,6 +26,13 @@ class Order < ApplicationRecord
 
     def generate_ordernumber
         self.orderNumber= SecureRandom.random_number(100000000);
+    end
+
+    def set_total
+        self.order_items.each { |element|
+            element.set_total()
+            self.total += element.total;
+        }
     end
 
 end
