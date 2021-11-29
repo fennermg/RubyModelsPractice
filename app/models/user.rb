@@ -12,6 +12,8 @@ class User < ApplicationRecord
     validates :active, inclusion: [true, false]
     validates :active, exclusion: [nil]
 
+    validate :valid_date
+
     validates :email,   format: { with: URI::MailTo::EMAIL_REGEXP, message: "Email invalid"  },
                         uniqueness: { case_sensitive: false },
                         length: { minimum: 4, maximum: 254 }
@@ -36,6 +38,12 @@ class User < ApplicationRecord
 
     def self.get_active_users
         self.where("active = true")
+    end
+
+    def valid_date
+        if self.get_age < 1
+            errors.add(:birthDate, "invalid date")
+        end
     end
 
     has_many :orders
