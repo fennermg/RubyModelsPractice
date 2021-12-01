@@ -41,7 +41,7 @@ class User < ApplicationRecord
     end
 
     def valid_date
-        if self.get_age < 1
+        if self.get_age < 13
             errors.add(:birthDate, "invalid date")
         end
     end

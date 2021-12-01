@@ -1,12 +1,13 @@
 class Order < ApplicationRecord
 
     before_validation  :generate_ordernumber
-    before_save :verify_user_active_order, :set_total
+    before_save :set_total
+
+    validate :verify_user_active_order, :avoid_duplicated_orderitems
 
     validates :orderNumber, :date, :total, presence: true
 
     validates :active, inclusion: [true, false]
-    validates :active, exclusion: [nil]
 
     belongs_to :user
     has_many :order_items, autosave: true
@@ -20,7 +21,7 @@ class Order < ApplicationRecord
     private
     def verify_user_active_order
         if self.user.has_active_order
-            throw :abort
+            errors.add(:active, "User already has an active order")
         end
     end
 
@@ -33,6 +34,17 @@ class Order < ApplicationRecord
             element.set_total()
             self.total += element.total;
         }
+    end
+
+    def avoid_duplicated_orderitems
+        items =  self.order_items
+
+        for item in items
+            duplicates = items.select{|element| element.product_id == item.product_id}
+            if duplicates.length >1
+                errors.add(:order_items, "Can't have duplicated items")
+            end
+        end
     end
 
 end
