@@ -13,8 +13,8 @@
 ActiveRecord::Schema.define(version: 2021_11_18_174151) do
 
   create_table "order_items", charset: "utf8mb4", force: :cascade do |t|
-    t.decimal "total", precision: 10, scale: 2
-    t.integer "quantity"
+    t.decimal "total", precision: 10, scale: 2, null: false
+    t.integer "quantity", null: false
     t.bigint "order_id"
     t.bigint "product_id"
     t.datetime "created_at", precision: 6, null: false
@@ -35,11 +35,11 @@ ActiveRecord::Schema.define(version: 2021_11_18_174151) do
   end
 
   create_table "products", charset: "utf8mb4", force: :cascade do |t|
-    t.string "name"
-    t.string "code"
-    t.decimal "price", precision: 10, scale: 2
-    t.integer "quantity"
-    t.boolean "active"
+    t.string "name", null: false
+    t.integer "code", null: false
+    t.decimal "price", precision: 10, scale: 2, null: false
+    t.integer "quantity", null: false
+    t.boolean "active", default: true, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

@@ -5,7 +5,6 @@ class Product < ApplicationRecord
     validates :name, :code, :price, :quantity, presence: true
 
     validates :active, inclusion: [true, false]
-    validates :active, exclusion: [nil]
 
     validates :price, numericality: { greater_than: 0.0 }
 
