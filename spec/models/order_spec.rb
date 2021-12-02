@@ -34,4 +34,16 @@ RSpec.describe Order, type: :model do
 
     expect(user.orders.first.save).to eq(false)
   end
+
+  it 'ensures user can not add deactivated products'do
+    user = User.new(name: "Fenner", lastName:"Mena", birthDate: "1996/04/16", password: "secret", email: "email@mail.com").save
+    user=User.first
+    user.orders.new(date: Time.now)
+    product = Product.new(name: "Producto1", price: 50, quantity: 5).save
+    product=Product.first
+    product.deactivate
+    user.orders.first.order_items.new(quantity: 5, product_id: product.id)
+
+    expect(user.orders.first.save).to eq(false)
+  end
 end

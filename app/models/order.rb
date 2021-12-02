@@ -3,7 +3,7 @@ class Order < ApplicationRecord
     before_validation  :generate_ordernumber
     before_save :set_total
 
-    validate :verify_user_active_order, :avoid_duplicated_orderitems
+    validate :verify_user_active_order, :avoid_duplicated_orderitems, :avoid_deactivated_products
 
     validates :orderNumber, :date, :total, presence: true
 
@@ -43,6 +43,16 @@ class Order < ApplicationRecord
             duplicates = items.select{|element| element.product_id == item.product_id}
             if duplicates.length >1
                 errors.add(:order_items, "Can't have duplicated items")
+            end
+        end
+    end
+
+    def avoid_deactivated_products
+        order_items = self.order_items
+
+        for order_item in order_items
+            if !order_item.product.active
+                errors.add(:order_item, "Can't have an deactivated product")
             end
         end
     end
